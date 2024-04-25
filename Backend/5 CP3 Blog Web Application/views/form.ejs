@@ -1,0 +1,70 @@
+<%- include("partials/header.ejs") %>
+
+<div class="container">
+  <div class="title-form">
+    <h1>Blog Post Submission Form</h1>
+  </div>
+
+  <hr />
+  <h2>Author Details</h2>
+  <p>
+    Please enter your contact details below so we can shout you out for your
+    amazing blog post 🙌📣.
+  </p>
+
+  <form action="/submit" method="POST">
+    <div class="name input">
+      <!-- <div class="col-xl-6 col-sm-12"> -->
+      <label for="fName">Name</label> <br />
+      <input type="text" id="fName" name="fName" placeholder="First" />
+      <!-- </div> -->
+
+      <!-- <div class="col-xl-6 col-sm-12"> -->
+      <label for="lName"></label>
+      <input type="text" id="lName" name="lName" placeholder="Last" />
+      <br />
+      <!-- </div> -->
+    </div>
+
+    <div class="eMail input">
+      <label for="eMail">Email</label> <br />
+      <input
+        type="email"
+        id="eMail"
+        name="eMail"
+        placeholder="email@address.com"
+      />
+      <br />
+    </div>
+
+    <div class="bio input">
+      <label for="bio">Brief Author Bio</label> <br />
+      <textarea name="bio" id="bio" rows="7" cols="50"></textarea> <br />
+
+      <p>Please keep it below 250 charatcers</p>
+    </div>
+
+    <hr />
+
+    <h2>Create a Blog Post</h2>
+
+    <p>Please submit your blog posts by using the fields below.</p>
+    <br />
+
+    <div class="title input">
+      <label for="pTitle">Post Title</label> <br />
+      <textarea name="pTitle" id="pTitle" rows="2" cols="50"></textarea>
+    </div>
+
+    <div class="content input">
+      <label for="pContent">Post Content</label> <br />
+      <textarea name="pContent" id="pContent" rows="7" cols="50"></textarea>
+    </div>
+
+    <div class="submit blog input">
+      <input type="submit" value="Submit Post" />
+    </div>
+  </form>
+</div>
+
+<%- include("footer/header.ejs") %>
