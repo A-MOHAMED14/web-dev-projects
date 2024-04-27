@@ -14,57 +14,30 @@
       <button type="submit" value="fish" name="choice">🐟</button>
     </form>
     <div id="recipeContainer" class="hidden">
-      <!-- If no recipe yet, show: -->
-      <% if (!locals.tacoRecipe) { %>
-      <h2>Pick your favourite taco ingredient 👆</h2>
       
       <!-- Else, show the recipe name e.g. <h2>Recipe name</h2>-->
+      <% if (locals.recipe) { %>
+
+      <h2><%= recipe.name %></h2>
+      <h3>Ingredients:</h3>
+      
+      <ul id="ingredientsList">
+        
+        <li> <%= recipe.ingredients.protein.name %>, <%= recipe.ingredients.protein.preparation %> </li>
+        <li> <%= recipe.ingredients.salsa.name %> </li>
+        
+        <% recipe.ingredients.toppings.forEach(function (topping) { %>
+        <li> <%= topping.quantity %> of <%= topping.name %> </li> 
+       <% }) %>
+        
+
+      </ul>
+
+      <!-- If no recipe yet, show: -->
       <% } else { %>
-        <% if (tacoProtein === "chicken") {%>
-          <h2> Chicken Taco </h2>
-          <h3>Ingredients:</h3>
-          <ul id="ingredientsList">
-          <li><%= tacoRecipe[0].ingredients.protein.name %>, <%= tacoRecipe[0].ingredients.protein.preparation %></li>
-          <li><%= tacoRecipe[0].ingredients.salsa.name %></li>
-          <li><%= tacoRecipe[0].ingredients.toppings[0].quantity %> of <%= tacoRecipe[0].ingredients.toppings[0].name %></li>
-          <li><%= tacoRecipe[0].ingredients.toppings[1].quantity %> of <%= tacoRecipe[0].ingredients.toppings[1].name %></li>
-          <li><%= tacoRecipe[0].ingredients.toppings[2].quantity %> of <%= tacoRecipe[0].ingredients.toppings[2].name %></li>
-          <li><%= tacoRecipe[0].ingredients.toppings[3].quantity %> of <%= tacoRecipe[0].ingredients.toppings[3].name %></li>
-          </ul>
-        <% } %>
+      <h2>Pick your favourite taco ingredient 👆</h2>
+      <% } %>
 
-
-        <% if (tacoProtein === "beef") {%>
-          <h2> Beef Taco </h2>
-          <h3>Ingredients:</h3>
-          <ul id="ingredientsList">
-          <li><%= tacoRecipe[1].ingredients.protein.name %>, <%= tacoRecipe[1].ingredients.protein.preparation %></li>
-          <li><%= tacoRecipe[1].ingredients.salsa.name %></li>
-          <li><%= tacoRecipe[1].ingredients.toppings[0].quantity %> of <%= tacoRecipe[1].ingredients.toppings[0].name %></li>
-          <li><%= tacoRecipe[1].ingredients.toppings[1].quantity %> of <%= tacoRecipe[1].ingredients.toppings[1].name %></li>
-          <li><%= tacoRecipe[1].ingredients.toppings[2].quantity %> of <%= tacoRecipe[1].ingredients.toppings[2].name %></li>
-          </ul>
-        <% } %>
-
-
-        <% if (tacoProtein === "fish") {%>
-          <h2> Fish Taco </h2>
-          <h3>Ingredients:</h3>
-          <ul id="ingredientsList">
-          <li><%= tacoRecipe[2].ingredients.protein.name %>, <%= tacoRecipe[2].ingredients.protein.preparation %></li>
-          <li><%= tacoRecipe[2].ingredients.salsa.name %></li>
-          <li><%= tacoRecipe[2].ingredients.toppings[0].quantity %> of <%= tacoRecipe[1].ingredients.toppings[0].name %></li>
-          <li><%= tacoRecipe[2].ingredients.toppings[1].quantity %> of <%= tacoRecipe[1].ingredients.toppings[1].name %></li>
-          <li><%= tacoRecipe[2].ingredients.toppings[2].quantity %> of <%= tacoRecipe[1].ingredients.toppings[2].name %></li>
-          </ul>
-        <% } %>
-      
-      <% }%>
-
-
-      
-      
-      
     </div>
   </body>
 </html>
