@@ -40,8 +40,8 @@ app.get("/basicAuth", async (req, res) => {
   try {
     const response = await axios.get(`${API_URL}all?page=2`, {
       auth: {
-        username: `${yourUsername}`,
-        password: `${yourPassword}`,
+        username: yourUsername,
+        password: yourPassword,
       },
     });
 
@@ -60,11 +60,14 @@ app.get("/apiKey", async (req, res) => {
   //HINT: You need to provide a query parameter of apiKey in the request.
 
   try {
-    const response = await axios.get(
-      `${API_URL}filter?score=5&apiKey=${yourAPIKey}`
-    );
+    const response = await axios.get(`${API_URL}filter`, {
+      params: {
+        score: 5,
+        apiKey: yourAPIKey,
+      },
+    });
     const result = response.data;
-    // console.log(result, "<<<<<<<<<");
+    console.log(result, "<<<<<<<<<");
     res.render("index.ejs", { content: JSON.stringify(result) });
   } catch (error) {
     console.error("Failed to make a request:", error.message);
@@ -97,3 +100,10 @@ app.get("/bearerToken", async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+// {
+//   params: {
+//     score: 5,
+//     apiKey: yourAPIKey,
+//   },
+// }
