@@ -38,7 +38,7 @@ app.get("/basicAuth", async (req, res) => {
   // https://stackoverflow.com/a/74632908
 
   try {
-    const response = await axios.get(`${API_URL}all?page=1`, {
+    const response = await axios.get(`${API_URL}all?page=2`, {
       auth: {
         username: `${yourUsername}`,
         password: `${yourPassword}`,
@@ -50,7 +50,7 @@ app.get("/basicAuth", async (req, res) => {
     res.render("index.ejs", { content: JSON.stringify(result) });
   } catch (error) {
     console.error("Failed to make a request:", error.message);
-    res.render("index.ejs", { error: error.message });
+    res.status(404).send(error.message);
   }
 });
 
@@ -68,7 +68,7 @@ app.get("/apiKey", async (req, res) => {
     res.render("index.ejs", { content: JSON.stringify(result) });
   } catch (error) {
     console.error("Failed to make a request:", error.message);
-    res.render("index.ejs", { error: error.message });
+    res.status(404).send(error.message);
   }
 });
 
@@ -90,7 +90,7 @@ app.get("/bearerToken", async (req, res) => {
     res.render("index.ejs", { content: JSON.stringify(result) });
   } catch (error) {
     console.error("Failed to make a request:", error.message);
-    res.render("index.ejs", { error: error.message });
+    res.status(404).send(error.message);
   }
 });
 
