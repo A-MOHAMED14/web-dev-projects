@@ -41,10 +41,48 @@ app.get("/filter", (req, res) => {
 });
 
 //4. POST a new joke
+app.post("/jokes", (req, res) => {
+  // console.log(req.body, "<------");
+  const newJoke = {
+    id: jokes.length++,
+    jokeText: req.body.text,
+    jokeType: req.body.type,
+  };
+  jokes.push(newJoke);
+  // console.log(jokes[jokes.length - 1], "*******");
+  res.json(newJoke);
+});
 
 //5. PUT a joke
+app.put("/jokes/:id", (req, res) => {
+  // console.log(req.params, "<------");
+  const jokeId = parseInt(req.params.id);
+  // console.log(typeof jokeId, "*******");
+  const replaceJoke = jokes.find((joke) => joke.id === jokeId);
+  // console.log(replaceJoke, "<<<<<<<<<<");
+  // console.log(req.body, "********");
+  replaceJoke.jokeText = req.body.text;
+  replaceJoke.jokeType = req.body.type;
+  console.log(replaceJoke, "<--------");
+
+  res.json(replaceJoke);
+});
 
 //6. PATCH a joke
+app.patch("/jokes/:id", (req, res) => {
+  const jokeId = parseInt(req.params.id);
+  const patchJoke = jokes.find((joke) => joke.id === jokeId);
+  console.log(patchJoke, "********");
+  if (req.body.text) {
+    patchJoke.jokeText = req.body.text;
+    console.log(patchJoke, "<------");
+    res.json(patchJoke);
+  } else {
+    patchJoke.jokeType = req.body.type;
+    console.log(patchJoke, "<------");
+    res.json(patchJoke);
+  }
+});
 
 //7. DELETE Specific joke
 
@@ -54,7 +92,7 @@ app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);
 });
 
-var jokes = [
+let jokes = [
   {
     id: 1,
     jokeText:
