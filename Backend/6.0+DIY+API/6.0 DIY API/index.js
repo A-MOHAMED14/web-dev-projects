@@ -1,4 +1,4 @@
-import express from "express";
+import express, { query } from "express";
 import bodyParser from "body-parser";
 
 const app = express();
@@ -85,9 +85,36 @@ app.patch("/jokes/:id", (req, res) => {
 });
 
 //7. DELETE Specific joke
+app.delete("/jokes/:id", (req, res) => {
+  const jokeId = parseInt(req.params.id);
+  const deletedJoke = jokes.find((joke) => joke.id === jokeId);
+
+  if (jokeId > 0) {
+    console.log(deletedJoke, "<-------");
+
+    const startingIndex = jokeId - 1;
+    jokes.splice(startingIndex, 1);
+    res.status(200).json(`Joke with id: ${jokeId} was deleted successfully ✅`);
+  } else {
+    res
+      .status(404)
+      .json(`Unable to delete joke with id: ${jokeId}, joke was not found ❌ `);
+  }
+});
 
 //8. DELETE All jokes
-
+app.delete("/all", (req, res) => {
+  console.log(req.query, "<------");
+  if (req.query.key === masterKey) {
+    // jokes.splice(0, jokes.length);
+    jokes = [];
+    res.status(200).json("All jokes have been successfully deleted");
+  } else {
+    res
+      .status(409)
+      .json("You do not have Authorisation to delete all jokes 🙅‍♂️");
+  }
+});
 app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);
 });
