@@ -1,3 +1,31 @@
+import express from "express";
+import axios from "axios";
+
+const app = express();
+const port = 3000;
+
+app.use(express.static("public"));
+
+app.get("/", async (req, res) => {
+  try {
+    const response = await axios.get(
+      "https://secrets-api.appbrewery.com/random"
+    );
+    const result = response.data;
+    // console.log(result, "<-------")
+
+    const randomSecret = JSON.stringify(result.secret);
+    const randomUser = JSON.stringify(result.username);
+    res.render("index.ejs", { secret: randomSecret, user: randomUser });
+  } catch (error) {
+    console.error("Failed to make a request:", error.message);
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
+
 // HINTS:
 // 1. Import express and axios
 
