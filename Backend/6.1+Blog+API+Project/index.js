@@ -32,9 +32,7 @@ let posts = [
   },
 ];
 
-// let lastId = 3;
-let lastId = posts[posts.length - 1].id;
-let newId = lastId + 1;
+let lastId = 3;
 
 // Middleware
 app.use(bodyParser.json());
@@ -50,8 +48,13 @@ app.get("/posts", (req, res) => {
 //CHALLENGE 2: GET a specific post by id
 app.get("/posts/:id", (req, res) => {
   // console.log(req.params, "<---------");
-  let postId = req.params.id;
-  const specificPost = posts[postId];
+  // let postIndex = req.params.id - 1;
+  // const specificPost = posts[postIndex];
+
+  const specificPost = posts.find((post) => post.id == parseInt(req.params.id));
+  if (!specificPost) {
+    res.status(404).json({ error: "Post does not exist" });
+  }
   res.status(200).send(specificPost);
 });
 
@@ -60,7 +63,7 @@ app.post("/posts", (req, res) => {
   const date = new Date();
   // console.log(date.toISOString(), "*********");
   // console.log(req.body, "<--------");
-
+  const newId = (lastId += 1);
   const newPost = {
     id: newId,
     title: req.body.title,
@@ -78,29 +81,34 @@ app.post("/posts", (req, res) => {
 
 //CHALLENGE 4: PATCH a post when you just want to update one parameter
 app.patch("/posts/:id", (req, res) => {
-  const postIndex = req.params.id - 1;
+  const postToPatch = posts.find((post) => post.id == parseInt(req.params.id));
 
-  if (req.body.title) {
-    posts[postIndex].title = req.body.title;
-    res.status(200).send(posts[postIndex]);
-  } else if (req.body.content) {
-    posts[postIndex].content = req.body.content;
-    res.status(200).send(posts[postIndex]);
-  } else if (req.body.author) {
-    posts[postIndex].author = req.body.author;
-    console.log(posts[postIndex], "<-------");
-    res.status(200).send(posts[postIndex]);
+  if (!postToPatch) {
+    res.status(404).json({ error: "Post does not exist" });
   }
+
+  if (req.body.title) postToPatch.title = req.body.title;
+
+  if (req.body.content) postToPatch.content = req.body.content;
+
+  if (req.body.author) postToPatch.author = req.body.author;
+
+  // console.log(postToPatch, "<-------");
+  res.status(200).send(postToPatch);
 });
 
 //CHALLENGE 5: DELETE a specific post by providing the post id.
 app.delete("/posts/:id", (req, res) => {
   const postIndex = req.params.id - 1;
+
+  if (postIndex < 0) {
+    res.status(404).send({ error: `Post does not exist` });
+  }
   posts.splice(postIndex, 1);
   console.log(`Post with id:${req.params.id} has successfully been deleted`);
   res
     .status(200)
-    .send(`Post with id:${req.params.id} has successfully been deleted`);
+    .json(`Post with id:${req.params.id} has successfully been deleted`);
 });
 
 app.listen(port, () => {
