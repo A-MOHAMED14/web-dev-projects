@@ -34,7 +34,7 @@ db.query("SELECT country_code FROM visited_countries", (err, res) => {
 });
 
 app.get("/", async (req, res) => {
-  //Write your code here.
+  res.render("index.ejs", { countries: countriesVisited, total: totalCountries });
 });
 
 app.listen(port, () => {
