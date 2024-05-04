@@ -13,7 +13,7 @@ const db = new pg.Client({
   port: 5432,
 });
 
-db.connect;
+db.connect();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -24,24 +24,23 @@ app.get("/", async (req, res) => {
       "SELECT country_code FROM visited_countries"
     );
 
-    let countriedVisited = [];
+    let countriesVisited = [];
 
     response.rows.forEach((country) => {
-      countriedVisited.push(country.country_code);
+      countriesVisited.push(country.country_code);
     });
 
     console.log(response.rows, "<--------");
-    console.log(countriedVisited, "*******");
+    console.log(countriesVisited, "*******");
 
     res.render("index.ejs", {
-      countries: countriedVisited,
-      total: countriedVisited.length,
+      countries: countriesVisited,
+      total: countriesVisited.length,
     });
 
     db.end();
   } catch (err) {
     console.error("Error:", err);
-    // res.status(500).send("Internal Server Error");
   }
 });
 
