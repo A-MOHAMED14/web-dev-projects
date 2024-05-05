@@ -45,22 +45,25 @@ app.get("/", async (req, res) => {
 
 app.post("/add", async (req, res) => {
   try {
-    // console.log(req.body, "<<<<<<<<");
     const newCountryVisited = req.body.country;
 
     const response = await db.query(
       "SELECT country_code FROM countries WHERE country_name = $1",
       [newCountryVisited]
     );
-    // console.log(response.rows[0], "$$$$$$$$$$");
 
-    const newCountryCode = response.rows[0].country_code;
-    // console.log(newCountryCode, "*********");
+    if (response.rows.length > 0) {
+      const newCountryCode = response.rows[0].country_code;
 
-    await db.query("INSERT INTO visited_countries (country_code) VALUES ($1)", [
-      newCountryCode,
-    ]);
-    res.redirect("/");
+      await db.query(
+        "INSERT INTO visited_countries (country_code) VALUES ($1)",
+        [newCountryCode]
+      );
+      res.redirect("/");
+    } else {
+      console.log("Invalid country name ❌");
+      // res.redirect("/"); 
+    }
   } catch (err) {
     console.error("Error querying database:", err);
   }
