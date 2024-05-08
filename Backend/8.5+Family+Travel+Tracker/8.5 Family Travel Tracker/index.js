@@ -38,9 +38,11 @@ async function checkVisisted() {
 }
 
 async function getCurrentUser() {
-  const result = await db.query("SELECT * FROM users");
-  users = result.rows;
-  return users.find((user) => user.id == currentUserId);
+  const result = await db.query("SELECT * FROM users WHERE id = $1", [
+    currentUserId,
+  ]);
+  const user = result.rows[0];
+  return user;
 }
 
 app.get("/", async (req, res) => {
@@ -56,7 +58,7 @@ app.get("/", async (req, res) => {
   });
 });
 app.post("/add", async (req, res) => {
-  const input = req.body["country"];
+  const input = req.body.country;
   const currentUser = await getCurrentUser();
 
   try {
@@ -86,7 +88,7 @@ app.post("/user", async (req, res) => {
     res.render("new.ejs");
   } else {
     currentUserId = req.body.user;
-    res.render("/");
+    res.redirect("/");
   }
 });
 
@@ -101,8 +103,7 @@ app.post("/new", async (req, res) => {
     "INSERT INTO users (name, color) VALUES ($1, $2) RETURNING *",
     [name, color]
   );
-  const newUserData = result.rows;
-  const newUserId = newUserData[0].id;
+  const newUserId = result.rows[0].id;
   currentUserId = newUserId;
 
   res.redirect("/");
